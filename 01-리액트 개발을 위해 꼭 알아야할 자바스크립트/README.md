@@ -49,3 +49,25 @@
 > - 함수 내부 동작이 함수 외부에 영향을 주는 것
 > - 부수효과가 없는 함수를 순수함수라고 한다
 > - 부수효과: API 호출 (HTTP 요청) / console.log (콘솔 창에 영향) / 리액트에서 useEffect hook
+
+### 클래스: `프로토타입`, `this`
+
+- [ ] 클래스란 공통된 객체 인스턴스를 만들기 위한 템플릿
+- contructor를 통해 인스턴스의 속성을 지정할 수 있다.
+- 클래스로 생성된 인스턴스의 메소드로 클래스의 메소드를 호출할 수 있는 이유는 프로토타입 체이닝 때문이다.
+- 자바스크립트의 클래스는 내부적으로 프로토타입으로 동작하며, 이는 함수로 구현되어 있다.
+- 클래스에서는 this를 통해 인스턴스에 접근이 가능하다.
+- static 키워드로 정의된 정적 메소드는 인스턴스가 아닌 클래스의 메소드로 직접 호출해야한다.
+- 때문에 정적메소드 내에서는 this로 인스턴스에 접근할 수 없다.
+
+---
+
+# 더 알아보기
+
+- `void 0`
+- 클래스형 컴포넌트에서 내부 함수(메소드) 구현 시 this.setState 사용불가
+  - this.setState가 어디에 속한건지?
+  - 책 41쪽 코드 참고
+  - this의 메소드로 호출을 했는데 왜 this.setState에 접근하지 못하는지 이해안감
+- [[TSError] ` Option 'module' must be set to 'NodeNext'`](https://www.totaltypescript.com/concepts/option-module-must-be-set-to-nodenext-when-option-moduleresolution-is-set-to-nodenext)
+- 클래스
