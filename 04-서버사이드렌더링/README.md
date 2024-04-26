@@ -1,4 +1,4 @@
-# 서버사이드 렌더링
+## 서버사이드 렌더링
 
 ### 서버사이드 렌더링이란,
 
@@ -34,3 +34,40 @@
   - **back and force cache**: 앞 뒤 페이지 캐시
   - **페인트 홀딩**: 라우팅 간에 렌더링이 지연되는 동안 이전 화면을 유지하는 기법
   - **shared element transitions**: 라우팅 간의 동일한 요소를 유지하여 전환이 부드럽게 보이도록 하는 기법
+
+## Next
+
+- Next.js는 ssr 시 hydrate 과정에서 발생하는 불필요한 연산, 네트워크 요청 등을 줄이기 위해(서버에서 이미 수행된 값을 재사용하기 위해) 서버에서 수행한 작업의 결과물을 script와 window 에 저장 (page props 뿐 아니라 스타일, fallback 정보 등 여러 정보)
+- css-in-js in ssr: ssr에서 css-in-js 를 사용할 때는 첫 렌더링에 스타일이 포함되지 않아 깜빡임 문제를 해결하기 위해 별도 초기화 과정이 필요하다.
+  1. 서버 렌더링 시 스타일 정보를 **미리 수집**
+  2. 해당 스타일 정보를 context로 제공
+  - 이를 위해 \_document 파일의 getInitialProps 정적 메소드 사용
+
+### getInitialProps
+
+- export default 되는 페이지 컴포넌트의 정적 메소드로 추가되어야 한다.
+- 프로미스를 반환하는 비동기 함수여야 한다.
+- 첫 렌더링 시점을 알 수 있다
+
+  - 첫 렌더링 시에는 페이지 전체 요청, 이후에는 `_next`로 시작하는 경로로 json 파일만 요청
+
+  ```tsx
+  Component.getInitialProps = (context: AppContext) => {
+    const {
+      ctx: { req },
+      router: { pathname },
+    } = context
+
+    if (
+      req &&
+      !req.url.startWith('/_next') &&
+      !['/500', '/404', '/_error'].includes(pathname)
+    ) {
+      // 첫 요청 시 수행할 작업
+    }
+
+    // 꼭 기존의 initialProps는 그대로 반환해주어야한다
+    const appProps = App.getInitialProps(context)
+    return appProps
+  }
+  ```
